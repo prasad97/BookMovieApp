@@ -7,8 +7,8 @@ import Header from '../../common/header/Header';
 
 // Styles
 import "./Home.css";
-import { Card, CardContent, Typography,InputLabel, Input, FormControl,Select,GridList, GridListTile, GridListTileBar } from '@material-ui/core';
-import { TextField , Button} from '@material-ui/core';
+import { Card, CardContent, Typography, InputLabel, Input, FormControl, Select, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
+import { TextField, Button, MenuItem, ListItemText, Checkbox } from '@material-ui/core';
 
 const useStyles = (theme) => ({
     root: {
@@ -43,6 +43,13 @@ class Home extends Component {
         this.state = {
             upcomingMovies: [{}],
             releasedMovies: [{}],
+            genresList: [{}],
+            artistsList: [{}],
+            movieName: '',
+            genres: [],
+            artists: [],
+            releaseStartDate: '',
+            releaseEndDate: '',
         }
     }
 
@@ -90,14 +97,81 @@ class Home extends Component {
         }
     }
 
+    // Get Genres
+    getGenres = async () => {
+        const url = this.props.baseUrl + 'genres';
+
+        try {
+            const rawResponse = await fetch(url);
+
+            if (rawResponse.ok) {
+                const response = await rawResponse.json();
+                // console.log(response.genres);
+                this.setState({ genresList: response.genres });
+            }
+            else {
+                const error = new Error();
+                error.message = "Some Error Occurred";
+                throw error;
+            }
+        } catch (e) {
+            alert(e.message);
+        }
+    }
+
+    // Get Genres
+    getArtists = async () => {
+        const url = this.props.baseUrl + 'artists';
+
+        try {
+            const rawResponse = await fetch(url);
+
+            if (rawResponse.ok) {
+                const response = await rawResponse.json();
+                // console.log(response.genres);
+                this.setState({ artistsList: response.artists });
+            }
+            else {
+                const error = new Error();
+                error.message = "Some Error Occurred";
+                throw error;
+            }
+        } catch (e) {
+            alert(e.message);
+        }
+    }
+
     componentWillMount() {
         this.getUpcomingMovies();
         this.getReleasedMovies();
+        this.getGenres();
+        this.getArtists();
     }
 
     movieClickHandler = (id) => {
         alert("Clicked on Movie with Id :" + id);
     }
+
+    changeMovieNameHandler = (event) => {
+        this.setState({ movieName: event.target.value });
+    }
+
+    changeGenreHandler = (event) => {
+        this.setState({ genres: event.target.value });
+    }
+
+    changeArtistsHandler = (event) => {
+        this.setState({ artists: event.target.value });
+    }
+
+    releaseStartDateHandler = (event) => {
+        this.setState({ releaseStartDate: event.target.value });
+    }
+
+    releaseEndDateHandler = (event) => {
+        this.setState({ releaseEndDate: event.target.value });
+    }
+
 
     render() {
         const { classes } = this.props;
@@ -142,40 +216,76 @@ class Home extends Component {
                                         FIND MOVIES BY:
                                     </Typography>
                                 </FormControl>
+
                                 <FormControl className={classes.cardFormControl}>
                                     <InputLabel htmlFor="movieName"> Movie Name </InputLabel>
                                     <Input id="movieName" onChange={this.changeMovieNameHandler} />
                                 </FormControl>
+
                                 <FormControl className={classes.cardFormControl}>
-                                    <InputLabel htmlFor="genre"> Genre </InputLabel>
-                                    <Select id="genre" onChange={this.changeGenreHandler} />
+                                    <InputLabel htmlFor="genres"> Genre </InputLabel>
+                                    <Select
+                                        id="genres"
+                                        onChange={this.changeGenreHandler}
+                                        multiple
+                                        input={<Input id="genres" />}
+                                        renderValue={(selected) => selected.join(', ')}
+                                        value={this.state.genres}>
+                                        <MenuItem value="0">None
+                                        </MenuItem>
+                                        {this.state.genresList.map(genre => (
+                                            <MenuItem key={"gen" + genre.id} value={genre.genre}>
+                                                <Checkbox checked={this.state.genres.indexOf(genre.genre) > - 1} />
+                                                <ListItemText primary={genre.genre} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+
                                 </FormControl>
+
                                 <FormControl className={classes.cardFormControl}>
                                     <InputLabel htmlFor="artists"> Artists </InputLabel>
-                                    <Select id="artists" onChange={this.changeArtistsHandler}/>
+                                    <Select
+                                        id="artists"
+                                        onChange={this.changeArtistsHandler}
+                                        input={<Input id="artists" />}
+                                        renderValue={selected => selected.join(',')}
+                                        value={this.state.artists}
+                                        multiple>
+                                        <MenuItem value="0">None</MenuItem>
+                                        {this.state.artistsList.map(artist => (
+                                            <MenuItem key={"art" + artist.id} value={artist.first_name + " " + artist.last_name}>
+                                                <Checkbox checked={this.state.artists.indexOf(artist.first_name + " " + artist.last_name) > - 1} />
+                                                <ListItemText primary={artist.first_name + " " + artist.last_name} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                                 </FormControl>
+
                                 <FormControl className={classes.cardFormControl}>
-                                    <TextField 
-                                    id="releaseStartDate" 
-                                    onChange={this.releaseStartDateHandler}
-                                    type="date"
-                                    defaultValue = ""
-                                    InputLabelProps = {{shrink: true}}
-                                    label = "Release Date Start"
+                                    <TextField
+                                        id="releaseStartDate"
+                                        onChange={this.releaseStartDateHandler}
+                                        type="date"
+                                        defaultValue=""
+                                        InputLabelProps={{ shrink: true }}
+                                        label="Release Date Start"
                                     />
                                 </FormControl>
+
                                 <FormControl className={classes.cardFormControl}>
-                                    <TextField 
-                                    id="releaseEndDate" 
-                                    onChange={this.releaseEndDateHandler}
-                                    type="date"
-                                    defaultValue = ""
-                                    InputLabelProps = {{shrink: true}}
-                                    label = "Release Date End"
+                                    <TextField
+                                        id="releaseEndDate"
+                                        onChange={this.releaseEndDateHandler}
+                                        type="date"
+                                        defaultValue=""
+                                        InputLabelProps={{ shrink: true }}
+                                        label="Release Date End"
                                     />
                                 </FormControl>
+
                                 <FormControl className={classes.cardFormControl}>
-                                    <Button variant="contained" color="primary" onClick={()=> this.applyFilterHandler}>APPLY</Button>
+                                    <Button variant="contained" color="primary" onClick={() => this.applyFilterHandler}>APPLY</Button>
                                 </FormControl>
                             </CardContent>
                         </Card>
