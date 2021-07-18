@@ -21,3 +21,19 @@
 .book-button{
     margin-right: 8px;
 }
+
+.tabs {
+    margin-bottom: 20px;
+}
+
+.red{
+    color: red;
+}
+
+.none {
+    display: none;
+}
+
+.block{
+    display: block;
+}
