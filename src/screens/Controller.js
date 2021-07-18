@@ -8,11 +8,19 @@ import Home from '../screens/home/Home';
 
 
 export default class Controller extends Component {
+    
+    constructor(){
+        super();
+        this.baseUrl = "http://localhost:8085/api/v1/";
+    }
+
+
+
     render() {
         return (
             <Router>
                 <div>
-                    <Route exact path='/' render={()=> <Home></Home> } />
+                    <Route exact path='/' render={(props) => <Home {...props} baseUrl = {this.baseUrl}/> }  />
                 </div>
             </Router>
         )

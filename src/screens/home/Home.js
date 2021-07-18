@@ -7,7 +7,7 @@ export default class Home extends Component {
         return (
             <div>
                 {/* Header */}
-                <Header></Header>
+                <Header  baseUrl={this.props.baseUrl}></Header>
                 
                 <h1>Home Content</h1>
             </div>

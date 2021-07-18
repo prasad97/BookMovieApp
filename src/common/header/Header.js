@@ -43,7 +43,7 @@ export default class Header extends Component {
         super();
         this.state = {
             isLoggedIn: false,
-            isModalOpen: true,
+            isModalOpen: false,
             value: 0,
             username: '',
             usernameRequiredClass: 'none',
@@ -76,8 +76,55 @@ export default class Header extends Component {
         this.setState({ password: event.target.value });
     }
 
-    loginHandler = () =>{
-        alert("Login function Called");
+    loginHandler = async () =>{
+        // alert("Login function Called");
+        
+        // validate data
+        this.state.username === '' ? this.setState({ usernameRequiredClass : 'block' }) :this.setState({ usernameRequiredClass : 'none' });
+        this.state.password === "" ? this.setState({ passwordRequiredClass: "block" }) : this.setState({ passwordRequiredClass: "none" });
+
+        // return if blank username & password are passed
+        if (this.state.username === "" || this.state.password === "") { return }
+
+        //login user
+        // console.log(this.props.baseUrl);
+
+        let that = this;
+        const url = this.props.baseUrl + "auth/login";
+        // console.log(url);
+        const params = window.btoa(this.state.username + ":" + this.state.password);
+
+        try{
+            const rawResponse = await fetch(url,{
+                method:'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    "Authorization": `Basic ${params}`,
+                }
+            });
+
+            if(rawResponse.ok){
+                const response = await rawResponse.json();
+                // console.log(response);
+                // window.location.href = "/";
+                window.sessionStorage.setItem('user-details',JSON.stringify(response));
+                window.sessionStorage.setItem('userId',JSON.stringify(response.id));
+                window.sessionStorage.setItem('access-token',rawResponse.headers.get('access-token'));
+                that.setState({isLoggedIn:true});
+                // console.log(that.state.isLoggedIn);
+                that.closeModalHandler();
+            }
+            else{
+                const error = new Error();
+                error.message = 'Something went wrong.';
+                throw error;
+            }
+        } catch(e){
+            alert(e.message);
+        }
+        
+        
     }
 
     render() {
@@ -142,7 +189,7 @@ export default class Header extends Component {
                         <TabContainer>
                             <FormControl required>
                                 <InputLabel htmlFor="username">Username</InputLabel>
-                                <Input type="text" id="username" onChange={this.state.changeFormUsernameHandler} />
+                                <Input type="text" id="username" onChange={this.changeFormUsernameHandler} />
                                 <FormHelperText className={this.state.usernameRequiredClass}>
                                     <span className='red'>
                                         required
@@ -152,7 +199,7 @@ export default class Header extends Component {
                             <br/><br/>
                             <FormControl required>
                                 <InputLabel htmlFor="password">Password</InputLabel>
-                                <Input type="password" id="password" onChange={this.state.changeFormPasswordHandler} />
+                                <Input type="password" id="password" onChange={this.changeFormPasswordHandler} />
                                 <FormHelperText className={this.state.passwordRequiredClass}>
                                     <span className='red'>
                                         required
