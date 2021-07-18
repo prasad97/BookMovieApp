@@ -42,7 +42,7 @@ export default class Header extends Component {
     constructor() {
         super();
         this.state = {
-            isLoggedIn: false,
+            isLoggedIn: sessionStorage.getItem('access-token') == null ? false : true,
             isModalOpen: false,
             value: 0,
             username: '',
@@ -52,6 +52,7 @@ export default class Header extends Component {
         }
     }
 
+    // Modal Handlers
     openModalHandler = () => {
         this.setState({ isModalOpen: true });
     }
@@ -60,14 +61,11 @@ export default class Header extends Component {
         this.setState({ isModalOpen: false });
     }
 
-    logoutHandler = () => {
-        alert("Logout")
-    }
-
     tabSwitchHandler = (event, value) => {
         this.setState({ value: value })
     }
 
+    // Form Data Change Handlers
     changeFormUsernameHandler = (event) => {
         this.setState({ username: event.target.value });
     }
@@ -75,6 +73,8 @@ export default class Header extends Component {
     changeFormPasswordHandler = (event) => {
         this.setState({ password: event.target.value });
     }
+
+    // Login / Logout handlers
 
     loginHandler = async () =>{
         // alert("Login function Called");
@@ -125,6 +125,13 @@ export default class Header extends Component {
         }
         
         
+    }
+
+    logoutHandler = () => {
+        sessionStorage.removeItem('user-details');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('access-token');
+        this.setState({isLoggedIn:false});
     }
 
     render() {
@@ -209,6 +216,7 @@ export default class Header extends Component {
                             <br /><br />
                             <Button variant="contained" color="primary" onClick={this.loginHandler}>LOGIN</Button>
                         </TabContainer>}
+                    
                 </Modal>
 
 
