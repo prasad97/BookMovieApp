@@ -1,0 +1,20 @@
+.container{
+    display:flex;
+    
+}
+
+.container > div{
+    margin: 16px;
+}
+
+.left-container{
+    /* background: red;
+    height: 200px; */
+    width: 76%;
+}
+
+.right-container{
+    /* background: blue;
+    height: 200px; */
+    width: 24%;
+}

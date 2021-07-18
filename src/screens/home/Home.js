@@ -22,6 +22,9 @@ const useStyles = (theme) => ({
     upcomingMoviesGrid : {
         width:'100%',
         flexWrap: 'nowrap',
+    },
+    releasedMoviesGrid : {
+        cursor:'pointer'
     }
 });
 
@@ -31,6 +34,7 @@ class  Home extends Component {
         super();
         this.state = {
             upcomingMovies: [{}],
+            releasedMovies: [{}],
         }
     }
 
@@ -55,11 +59,37 @@ class  Home extends Component {
             alert(e.message);
         }
     }
+
+    // Get Released Movies
+    getReleasedMovies = async () => {
+        const url = this.props.baseUrl + 'movies?status=RELEASED';
+
+        try{
+            const rawResponse = await fetch(url);
+
+            if(rawResponse.ok){
+                const response = await rawResponse.json();
+                // console.log(response.movies);
+                this.setState({releasedMovies: response.movies});
+            }
+            else{
+                const error = new Error();
+                error.message = "Some Error Occurred";
+                throw error;
+            }
+        }catch(e){
+            alert(e.message);
+        }
+    }
     
     componentWillMount() {
         this.getUpcomingMovies();
+        this.getReleasedMovies();
     }
 
+    movieClickHandler = (id) =>{
+        alert("Clicked on Movie with Id :" + id);
+    }
    
     render() {
         const {classes} = this.props;
@@ -80,7 +110,26 @@ class  Home extends Component {
                     })}
                 </GridList>
                 
-                
+                <div className="container">
+                    <div className="left-container">
+                        <GridList cols={4} cellHeight={350} className = {classes.releasedMoviesGrid}>
+                            {this.state.releasedMovies.map(movie => {
+                                return <GridListTile onClick = {()=> this.movieClickHandler(movie.id)} key={"rel"+movie.id}>
+                                    <img src={movie.poster_url} alt={movie.title} />
+                                    <GridListTileBar 
+                                        title={movie.title} 
+                                        subtitle={<span>
+                                            Release Date: {new Date(movie.release_date).toString()}
+                                        </span>}>
+                                    </GridListTileBar>
+                                </GridListTile>
+                            })}
+                        </GridList>
+                    </div>
+                    <div className="right-container">
+
+                    </div>
+                </div>
                 
             </div>
         )
