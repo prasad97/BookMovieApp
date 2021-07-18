@@ -1,0 +1,15 @@
+.header{
+    background-color: #222;
+    height:36px;
+    padding: 8px 32px 8px 16px;
+}
+
+.logo{
+    height: 35px;
+    background-color: #ff7f7f;
+    animation: spin infinite 8s linear;
+}
+
+@keyframes spin{
+    from { transform: scaleX(-1); }
+}
