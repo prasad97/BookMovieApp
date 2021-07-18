@@ -1,17 +1,34 @@
 // Imports
 import React, { Component } from 'react'
-import Header from '../../common/header/Header'
+import { withStyles } from '@material-ui/core/styles';
+
+// Components
+import Header from '../../common/header/Header';
 
 // Styles
 import "./Home.css";
 
-export default class Home extends Component {
+const useStyles = (theme) => ({
+    root: {
+        flexGrow: 1,
+      },
+    upcomingMoviesHeader:{
+        textAlign: 'center',
+        padding: '8px',
+        background: '#ff9999',
+        fontSize: '1rem',
+    }
+});
+
+class  Home extends Component {
+   
     render() {
+        const {classes} = this.props;
         return (
             <div>
                 {/* Header */}
                 <Header  baseUrl={this.props.baseUrl}></Header>
-                <div className='upcomingMoviesHeader'>
+                <div className={classes.upcomingMoviesHeader}>
                     Upcoming Movies
                 </div>
                 <h1>Home Content</h1>
@@ -19,3 +36,5 @@ export default class Home extends Component {
         )
     }
 }
+
+export default withStyles(useStyles)(Home);
