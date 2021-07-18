@@ -13,3 +13,11 @@
 @keyframes spin{
     from { transform: scaleX(-1); }
 }
+
+.login-button, .book-button {
+    float: right;
+}
+
+.book-button{
+    margin-right: 8px;
+}
