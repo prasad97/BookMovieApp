@@ -3,39 +3,69 @@ import React, { Component } from 'react';
 import logo from '../../assets/logo.svg';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
+import { Tab, Tabs } from '@material-ui/core';
 
 // Styles
 import './Header.css';
+
+
+const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
 
 
 export default class Header extends Component {
     constructor(){
         super();
         this.state = {
-            isLoggedIn:true,
+            isLoggedIn:false,
+            isModalOpen:false,
+            value:0,
         }
     }
     
     openModalHandler = ()=>{
-        alert("Open Modal triggered.")
+        this.setState({isModalOpen:true});
     }
+
+    closeModalHandler = ()=>{
+        this.setState({isModalOpen:false});
+    }
+
+    logoutHandler = ()=>{
+        alert("Logout")
+    }
+
+    tabSwitchHandler = (event, value)=>{
+        this.setState({value : value})
+    }
+
 
 
     render() {
         return (
             <div>
+                {/* Header */}
                 <header className="header">
                     <img src={logo} className="logo" alt="logo" />
 
                     {/* Login/Logout button */}
                     {!this.state.isLoggedIn ? 
                     <div className="login-button">
-                        <Button variant="contained" color="default">
+                        <Button variant="contained" color="default" onClick = {this.openModalHandler}>
                             Login
                         </Button>
                     </div> :
                     <div className="login-button">
-                        <Button variant="contained" color="default">
+                        <Button variant="contained" color="default" onClick = {this.logoutHandler}>
                             Logout
                         </Button>
                     </div>}
@@ -64,9 +94,23 @@ export default class Header extends Component {
                             </Button> 
                         </Link>
                     </div>: ""}
-                    
-
                 </header>
+                
+                {/* Modal */}
+                <Modal
+                    isOpen={this.state.isModalOpen}
+                    onRequestClose={this.closeModalHandler}
+                    style = {customStyles}
+                    >
+                    <Tabs value={this.state.value} onChange = {this.tabSwitchHandler}>
+                        <Tab label="Login" />
+                        <Tab label="Register" />
+                    </Tabs>    
+                </Modal>
+
+
+
+
             </div>
         )
     }
