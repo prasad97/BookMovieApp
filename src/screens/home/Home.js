@@ -30,6 +30,7 @@ const useStyles = (theme) => ({
     cardFormControl: {
         margin: theme.spacing.unit,
         minWidth: 240,
+        maxWidth: 240
     },
     cardTitle: {
         color: theme.palette.primary.light,
@@ -141,6 +142,29 @@ class Home extends Component {
         }
     }
 
+    // Get Released Movies
+    getFilteredMovies = async (queryString) => {
+        const url = this.props.baseUrl + 'movies' + encodeURI(queryString);
+        console.log(url);
+
+        try {
+            const rawResponse = await fetch(url);
+
+            if (rawResponse.ok) {
+                const response = await rawResponse.json();
+                // console.log(response.movies);
+                this.setState({ releasedMovies: response.movies });
+            }
+            else {
+                const error = new Error();
+                error.message = "Some Error Occurred";
+                throw error;
+            }
+        } catch (e) {
+            alert(e.message);
+        }
+    }
+
     componentWillMount() {
         this.getUpcomingMovies();
         this.getReleasedMovies();
@@ -151,6 +175,7 @@ class Home extends Component {
     movieClickHandler = (id) => {
         alert("Clicked on Movie with Id :" + id);
     }
+    
 
     changeMovieNameHandler = (event) => {
         this.setState({ movieName: event.target.value });
@@ -171,6 +196,30 @@ class Home extends Component {
     releaseEndDateHandler = (event) => {
         this.setState({ releaseEndDate: event.target.value });
     }
+
+
+    applyFilterHandler = () => {
+        let string = '?status=RELEASED';
+        if (this.state.movieName !== "") {
+            string += "&title=" + this.state.movieName;
+          }
+          if (this.state.genres.length > 0) {
+            string += "&genre=" + this.state.genres.toString();
+          }
+          if (this.state.artists.length > 0) {
+            string += "&artist_name=" + this.state.artists.toString();
+          }
+          if (this.state.releaseStartDate !== "") {
+            string += "&start_date=" + this.state.releaseStartDate
+          }
+          if (this.state.releaseEndDate !== "") {
+            string += "&end_date=" + this.state.releaseEndDate
+          }
+
+          this.getFilteredMovies(string);
+      
+    }
+
 
 
     render() {
@@ -285,7 +334,7 @@ class Home extends Component {
                                 </FormControl>
 
                                 <FormControl className={classes.cardFormControl}>
-                                    <Button variant="contained" color="primary" onClick={() => this.applyFilterHandler}>APPLY</Button>
+                                    <Button variant="contained" color="primary" onClick={() => this.applyFilterHandler()}>APPLY</Button>
                                 </FormControl>
                             </CardContent>
                         </Card>
