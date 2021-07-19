@@ -20,3 +20,17 @@
 .right{
     width:20%;
 }
+
+.text-bold{
+   
+    font-weight:bold;
+    
+}
+
+.storyLine{
+    margin-top:16px; 
+}
+
+.trailerContainer {
+    margin: 16px 0px 0px 0px;
+  }

@@ -1,6 +1,7 @@
-import { Typography } from '@material-ui/core';
 import React, { Component } from 'react';
+import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import YouTube from 'react-youtube'; //https://www.npmjs.com/package/react-youtube
 
 // Components
 import Header from '../../common/header/Header';
@@ -13,7 +14,8 @@ export default class Details extends Component {
         super();
         this.state = {
             movie : {
-
+                genres:[],
+                trailer_url:'',
             }
         }
     }
@@ -28,7 +30,7 @@ export default class Details extends Component {
 
             if (rawResponse.ok) {
                 const response = await rawResponse.json();
-                // console.log(response);
+                console.log(response);
                 this.setState({ movie: response});
             }
             else {
@@ -46,6 +48,13 @@ export default class Details extends Component {
     }
 
     render() {
+        const opts = {
+            height: '300',
+            width: '700',
+            playerVars: {
+                autoplay: 1
+            }
+        }
         return (
             <div>
                 <Header baseUrl={this.props.baseUrl} showBookButton="true"  id={this.props.match.params.id} />
@@ -60,7 +69,33 @@ export default class Details extends Component {
                         <img src={this.state.movie.poster_url} alt={this.state.movie.title}/>
                     </div>
                     <div className="middle">
-
+                    <div>
+                            <Typography variant="headline" component="h2">{this.state.movie.title} </Typography>
+                        </div>
+                        <div>
+                            <Typography><span className="text-bold">Genres: </span> {this.state.movie.genres.join(', ')} </Typography>
+                        </div>
+                        <div>
+                            <Typography><span className="text-bold">Duration:</span> {this.state.movie.duration} </Typography>
+                        </div>
+                        <div>
+                            <Typography><span className="text-bold">Release Date:</span> {new Date(this.state.movie.release_date).toDateString()} </Typography>
+                        </div>
+                        <div>
+                            {/* critics_rating key not available in response as asked in question. */}
+                            <Typography><span className="text-bold"> Rating:</span> {this.state.movie.rating}  </Typography>
+                        </div>
+                        <div className="storyLine">
+                            <Typography><span className="text-bold">Plot:</span> <a href={this.state.movie.wiki_url}>(Wiki link)</a> {this.state.movie.storyline} </Typography>
+                        </div>
+                        <div className="trailerContainer">
+                            <Typography><span className="text-bold">Trailer:</span></Typography>
+                            <YouTube
+                                videoId={this.state.movie.trailer_url.split("?v=")[1]}
+                                opts={opts}
+                                onReady={this._onReady}
+                            />
+                        </div>
                     </div>
                     <div className="left">
 
