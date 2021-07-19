@@ -55,9 +55,9 @@ export default class Header extends Component {
             lastnameRequiredClass: 'none',
             email: '',
             emailRequiredClass: 'none',
-            registrationPassword:'',
+            registrationPassword: '',
             registrationPasswordRequiredClass: 'none',
-            contact:'',
+            contact: '',
             contactRequiredClass: 'none',
             registeredSuccessfully: false,
         }
@@ -165,16 +165,16 @@ export default class Header extends Component {
     }
 
     // Register Handler
-    registerHandler = async ()=> {
+    registerHandler = async () => {
 
         // Validation
-        this.state.firstname === ""? this.setState({firstnameRequiredClass:'block'}) : this.setState({firstnameRequiredClass:'none'});
-        this.state.lastname === ""? this.setState({lastnameRequiredClass:'block'}) : this.setState({lastnameRequiredClass:'none'});
-        this.state.email === ""? this.setState({emailRequiredClass:'block'}) : this.setState({emailRequiredClass:'none'});
-        this.state.registrationPassword === ""? this.setState({registrationPasswordRequiredClass:'block'}) : this.setState({registrationPasswordRequiredClass:'none'});
-        this.state.contact === ""? this.setState({contactRequiredClass:'block'}) : this.setState({contactRequiredClass:'none'});
+        this.state.firstname === "" ? this.setState({ firstnameRequiredClass: 'block' }) : this.setState({ firstnameRequiredClass: 'none' });
+        this.state.lastname === "" ? this.setState({ lastnameRequiredClass: 'block' }) : this.setState({ lastnameRequiredClass: 'none' });
+        this.state.email === "" ? this.setState({ emailRequiredClass: 'block' }) : this.setState({ emailRequiredClass: 'none' });
+        this.state.registrationPassword === "" ? this.setState({ registrationPasswordRequiredClass: 'block' }) : this.setState({ registrationPasswordRequiredClass: 'none' });
+        this.state.contact === "" ? this.setState({ contactRequiredClass: 'block' }) : this.setState({ contactRequiredClass: 'none' });
 
-        if(this.state.firstname === "" || this.state.lastname === "" || this.state.email === "" || this.state.registrationPassword === "" || this.state.contact === ""){
+        if (this.state.firstname === "" || this.state.lastname === "" || this.state.email === "" || this.state.registrationPassword === "" || this.state.contact === "") {
             return;
         }
 
@@ -184,14 +184,14 @@ export default class Header extends Component {
             "last_name": this.state.lastname,
             "mobile_number": this.state.contact,
             "password": this.state.registrationPassword,
-          }
+        }
 
         const url = this.props.baseUrl + "signup";
-        
-        try{
+
+        try {
             // debugger;
-            const rawResponse = await fetch(url,{
-                method:'POST',
+            const rawResponse = await fetch(url, {
+                method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json;charset=UTF-8',
@@ -199,17 +199,17 @@ export default class Header extends Component {
                 body: JSON.stringify(data)
             });
 
-            
-            if(rawResponse.ok){
+
+            if (rawResponse.ok) {
                 // const response = await rawResponse.json();
                 // console.log(response);
-                this.setState({registeredSuccessfully : true});
+                this.setState({ registeredSuccessfully: true });
             }
-        }catch(e){
+        } catch (e) {
             alert(e.message);
         }
-        
-        
+
+
     }
 
     render() {
@@ -235,7 +235,6 @@ export default class Header extends Component {
                     {/* Bookshow Button */}
                     {/* This button should always be displayed in the header when a user clicks on a released movie, whether they are logged in or not. 
                     When a user is not logged in, clicking the Book Show button would open the modal that would ask them to log in/register on the application.*/}
-                    {/* showBookButton prop to be sent from details screen later */}
                     {this.props.showBookButton === "true" && !this.state.isLoggedIn ?
                         <div className="book-button">
                             <Button variant="contained" color="primary" onClick={this.openModalHandler}>
@@ -246,9 +245,9 @@ export default class Header extends Component {
 
                     {/* If the user is logged in, then it would open the Book Show page, which you can find in the ‘bookshow’ folder, which is present in the ‘screens’ folder.  */}
                     {
-                        // comment out once details screen is created
+                        
                         this.props.showBookButton === "true" &&
-                        this.state.isLoggedIn ?
+                            this.state.isLoggedIn ?
                             <div className="book-button">
                                 <Link to={"/bookshow/" + this.props.id} >
                                     <Button variant="contained" color="primary">
@@ -351,10 +350,10 @@ export default class Header extends Component {
                             {this.state.registeredSuccessfully === true &&
                                 <FormControl>
                                     <span>Registration Successful. Please Login!</span>
-                                </FormControl>}<br/><br />
-                            
+                                </FormControl>}<br /><br />
+
                             <Button variant="contained" color="primary"
-                            onClick={this.registerHandler}>REGISTER</Button>
+                                onClick={this.registerHandler}>REGISTER</Button>
 
                         </TabContainer>}
                 </Modal>

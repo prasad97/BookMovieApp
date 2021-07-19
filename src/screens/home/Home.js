@@ -1,14 +1,14 @@
 // Imports
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
+import { Card, CardContent, Typography, InputLabel, Input, FormControl, Select, GridList, GridListTile, GridListTileBar, TextField, Button, MenuItem, ListItemText, Checkbox } from '@material-ui/core';
+
 
 // Components
 import Header from '../../common/header/Header';
 
 // Styles
 import "./Home.css";
-import { Card, CardContent, Typography, InputLabel, Input, FormControl, Select, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
-import { TextField, Button, MenuItem, ListItemText, Checkbox } from '@material-ui/core';
 
 const useStyles = (theme) => ({
     root: {
@@ -176,7 +176,7 @@ class Home extends Component {
         // alert("Clicked on Movie with Id :" + id);
         this.props.history.push('/movie/' + id);
     }
-    
+
 
     changeMovieNameHandler = (event) => {
         this.setState({ movieName: event.target.value });
@@ -203,22 +203,22 @@ class Home extends Component {
         let string = '?status=RELEASED';
         if (this.state.movieName !== "") {
             string += "&title=" + this.state.movieName;
-          }
-          if (this.state.genres.length > 0) {
+        }
+        if (this.state.genres.length > 0) {
             string += "&genre=" + this.state.genres.toString();
-          }
-          if (this.state.artists.length > 0) {
+        }
+        if (this.state.artists.length > 0) {
             string += "&artist_name=" + this.state.artists.toString();
-          }
-          if (this.state.releaseStartDate !== "") {
+        }
+        if (this.state.releaseStartDate !== "") {
             string += "&start_date=" + this.state.releaseStartDate
-          }
-          if (this.state.releaseEndDate !== "") {
+        }
+        if (this.state.releaseEndDate !== "") {
             string += "&end_date=" + this.state.releaseEndDate
-          }
+        }
 
-          this.getFilteredMovies(string);
-      
+        this.getFilteredMovies(string);
+
     }
 
 

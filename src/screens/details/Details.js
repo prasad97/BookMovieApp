@@ -17,10 +17,10 @@ export default class Details extends Component {
     constructor() {
         super();
         this.state = {
-            movie : {
-                genres:[],
-                trailer_url:'',
-                artists:[]
+            movie: {
+                genres: [],
+                trailer_url: '',
+                artists: []
             },
             stars: [{
                 id: 1,
@@ -61,7 +61,7 @@ export default class Details extends Component {
             if (rawResponse.ok) {
                 const response = await rawResponse.json();
                 // console.log(response);
-                this.setState({ movie: response});
+                this.setState({ movie: response });
             }
             else {
                 const error = new Error();
@@ -73,11 +73,11 @@ export default class Details extends Component {
         }
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.getSelectedMovie();
     }
 
-    starClickHandler = (id) =>{
+    starClickHandler = (id) => {
         let starList = [];
         for (let star of this.state.stars) {
             let selectedStar = star;
@@ -103,16 +103,16 @@ export default class Details extends Component {
         }
         return (
             <div>
-                <Header baseUrl={this.props.baseUrl} showBookButton="true"  id={this.props.match.params.id} />
+                <Header baseUrl={this.props.baseUrl} showBookButton="true" id={this.props.match.params.id} />
                 <div className="back-btn">
                     <Typography>
-                      <Link to="/">  &#60; Back to Home</Link>
+                        <Link to="/">  &#60; Back to Home</Link>
                     </Typography>
                 </div>
 
                 <div className="container">
                     <div className="left">
-                        <img src={this.state.movie.poster_url} alt={this.state.movie.title}/>
+                        <img src={this.state.movie.poster_url} alt={this.state.movie.title} />
                     </div>
                     <div className="middle">
                         <div>
@@ -149,7 +149,7 @@ export default class Details extends Component {
                         </Typography>
                         {this.state.stars.map(star => {
                             return <StarBorderIcon className={star.color} key={"star" + star.id} onClick={() => this.starClickHandler(star.id)} />;
-                        })}  
+                        })}
                         <div className="artists">
                             <Typography>
                                 <span className="text-bold">Artists:</span>
@@ -167,7 +167,7 @@ export default class Details extends Component {
                         </GridList>
                     </div>
                 </div>
-                
+
             </div>
 
         )
