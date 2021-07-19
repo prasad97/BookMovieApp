@@ -33,4 +33,19 @@
 
 .trailerContainer {
     margin: 16px 0px 0px 0px;
-  }
+}
+
+
+.yellow{
+color:yellow;
+cursor:pointer;
+}
+
+.black{
+color:none;
+cursor:pointer;
+}
+
+.artists{
+    margin: 16px 0px 16px 0px;
+}

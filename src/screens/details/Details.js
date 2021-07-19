@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube'; //https://www.npmjs.com/package/react-youtube
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 // Components
 import Header from '../../common/header/Header';
@@ -16,12 +20,38 @@ export default class Details extends Component {
             movie : {
                 genres:[],
                 trailer_url:'',
-            }
+                artists:[]
+            },
+            stars: [{
+                id: 1,
+                stateId: "1",
+                color: "black"
+            },
+            {
+                id: 2,
+                stateId: "2",
+                color: "black"
+            },
+            {
+                id: 3,
+                stateId: "3",
+                color: "black"
+            },
+            {
+                id: 4,
+                stateId: "4",
+                color: "black"
+            },
+            {
+                id: 5,
+                stateId: "5",
+                color: "black"
+            }]
         }
     }
 
     // Get Movie Detail
-    getSelectedMovie = async (queryString) => {
+    getSelectedMovie = async () => {
         const url = this.props.baseUrl + 'movies/' + this.props.match.params.id;
         // console.log(url);
 
@@ -30,7 +60,7 @@ export default class Details extends Component {
 
             if (rawResponse.ok) {
                 const response = await rawResponse.json();
-                console.log(response);
+                // console.log(response);
                 this.setState({ movie: response});
             }
             else {
@@ -45,6 +75,22 @@ export default class Details extends Component {
 
     componentWillMount(){
         this.getSelectedMovie();
+    }
+
+    starClickHandler = (id) =>{
+        let starList = [];
+        for (let star of this.state.stars) {
+            let selectedStar = star;
+            if (star.id <= id) {
+                selectedStar.color = "yellow"
+            }
+            else {
+                selectedStar.color = "black";
+
+            }
+            starList.push(selectedStar);
+        }
+        this.setState({ stars: starList });
     }
 
     render() {
@@ -69,7 +115,7 @@ export default class Details extends Component {
                         <img src={this.state.movie.poster_url} alt={this.state.movie.title}/>
                     </div>
                     <div className="middle">
-                    <div>
+                        <div>
                             <Typography variant="headline" component="h2">{this.state.movie.title} </Typography>
                         </div>
                         <div>
@@ -97,8 +143,28 @@ export default class Details extends Component {
                             />
                         </div>
                     </div>
-                    <div className="left">
-
+                    <div className="right">
+                        <Typography>
+                            <span className="text-bold">Rate this movie:</span>
+                        </Typography>
+                        {this.state.stars.map(star => {
+                            return <StarBorderIcon className={star.color} key={"star" + star.id} onClick={() => this.starClickHandler(star.id)} />;
+                        })}  
+                        <div className="artists">
+                            <Typography>
+                                <span className="text-bold">Artists:</span>
+                            </Typography>
+                        </div>
+                        <GridList cellHeight={160} cols={2}>
+                            {this.state.movie.artists.map(artist => (
+                                <GridListTile className="gridTile" onClick={() => this.artistClickHandler(artist.wiki_url)} key={artist.id}>
+                                    <img src={artist.profile_url} alt={artist.first_name + " " + artist.last_name} />
+                                    <GridListTileBar
+                                        title={artist.first_name + " " + artist.last_name}
+                                    />
+                                </GridListTile>
+                            ))}
+                        </GridList>
                     </div>
                 </div>
                 
