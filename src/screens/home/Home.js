@@ -120,7 +120,7 @@ class Home extends Component {
         }
     }
 
-    // Get Genres
+    // Get Artists
     getArtists = async () => {
         const url = this.props.baseUrl + 'artists';
 
@@ -142,7 +142,7 @@ class Home extends Component {
         }
     }
 
-    // Get Released Movies
+    // Get Filtered Movies
     getFilteredMovies = async (queryString) => {
         const url = this.props.baseUrl + 'movies' + encodeURI(queryString);
         console.log(url);
