@@ -250,7 +250,7 @@ export default class Header extends Component {
                         this.props.showBookButton === "true" &&
                         this.state.isLoggedIn ?
                             <div className="book-button">
-                                <Link to={"/bookshow/"} >
+                                <Link to={"/bookshow/" + this.props.id} >
                                     <Button variant="contained" color="primary">
                                         Book Show
                                     </Button>
