@@ -236,7 +236,7 @@ export default class Header extends Component {
                     {/* This button should always be displayed in the header when a user clicks on a released movie, whether they are logged in or not. 
                     When a user is not logged in, clicking the Book Show button would open the modal that would ask them to log in/register on the application.*/}
                     {/* showBookButton prop to be sent from details screen later */}
-                    {this.props.showBookButton === true && !this.state.isLoggedIn ?
+                    {this.props.showBookButton === "true" && !this.state.isLoggedIn ?
                         <div className="book-button">
                             <Button variant="contained" color="primary" onClick={this.openModalHandler}>
                                 Book Show
@@ -247,7 +247,7 @@ export default class Header extends Component {
                     {/* If the user is logged in, then it would open the Book Show page, which you can find in the ‘bookshow’ folder, which is present in the ‘screens’ folder.  */}
                     {
                         // comment out once details screen is created
-                        // this.props.showBookShowButton === "true" &&
+                        this.props.showBookButton === "true" &&
                         this.state.isLoggedIn ?
                             <div className="book-button">
                                 <Link to={"/bookshow/"} >

@@ -173,7 +173,8 @@ class Home extends Component {
     }
 
     movieClickHandler = (id) => {
-        alert("Clicked on Movie with Id :" + id);
+        // alert("Clicked on Movie with Id :" + id);
+        this.props.history.push('/movie/' + id);
     }
     
 
